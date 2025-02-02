@@ -1,13 +1,23 @@
 import React, { useState } from "react";
+import { updateTaskInfo } from "../services/updateTaskInfo"
 
 const UpdateTaskList = ({ tasks }) => {
   const [completedTasks, setCompletedTasks] = useState({});
+  const [taskCompleted, setTaskCompleted] = useState({});
 
-  const handleCheckboxChange = (index) => {
-    setCompletedTasks((prev) => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+  const handleCheckboxChange = async (index) => {
+    console.log("Task to update here...", index)
+    const taskToUpdate = tasks[index].taskname;
+    const newStatus = !completedTasks[index];
+    const response = await updateTaskInfo(taskToUpdate, newStatus);
+    if (response){
+      setCompletedTasks((prev) => ({
+        ...prev,
+        [index]: !prev[index],
+      }));
+    } else {
+      console.error("Failed to update task in the database.");
+    }
   };
 
   return (

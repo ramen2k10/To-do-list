@@ -62,7 +62,7 @@ app.post("/api/login", (req, res) => {
 });
 
 app.get("/api/fetchAllTask", (req, res) => {
-  const sql = "SELECT * FROM todo_list";
+  const sql = "SELECT taskname FROM todo_list";
   db.query(sql, (err, result) => {
       if (err) {
           console.error("Error retrieving task:", err);
@@ -71,6 +71,29 @@ app.get("/api/fetchAllTask", (req, res) => {
       console.log("successfully fetch all the task list from DB");
 
       res.status(200).json({ tasks: result });
+  });
+});
+
+app.put("/api/updateTask", (req, res) => {
+  const { taskname, taskCompleted } = req.body;
+
+  if (!taskname) {
+      console.error("Error: taskname is missing!");
+      return res.status(400).json({ error: "Task name is required" });
+  }
+
+  console.log("Received request for update task:", { taskname });
+
+  const sql = "UPDATE todo_list SET status = ? WHERE taskname = ?";
+  db.query(sql, [taskCompleted, taskname], (err, result) => {
+      if (err) {
+          console.error("Error inserting task:", err);
+          return res.status(500).json({ error: "Database error" });
+      }
+      console.log("Task updated successfully:", { taskname, taskCompleted });
+
+      // Send only one response
+      res.status(200).json({ message: "Task updated successfully!", taskname, taskCompleted });
   });
 });
 
