@@ -1,0 +1,93 @@
+/* Center the entire form container in the middle of the page */
+.App {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; /* Centers vertically */
+  height: 100vh; /* Full viewport height */
+  margin: 0;
+}
+
+/* Style for form button */
+.button {
+  height: 40px;
+  width: 100%; /* Make button full width */
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+  border: 1px solid #ccc;
+  background-color: #84c586;
+  color: white;
+}
+
+.button:hover {
+  background-color: #6ba15c;
+  color: whitesmoke;
+  border-color: gray;
+  transform: scale(1.05);
+}
+
+/* Container for the form, adding padding and alignment */
+.form__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 450px; /* Fixed width for large screens */
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for aesthetics */
+  box-sizing: border-box; /* Ensures padding is included in the total width calculation */
+}
+
+/* Styling for the header inside the form */
+.form__container h1 {
+  text-align: center; /* Centers the header text */
+  margin-bottom: 20px; /* Adds space between header and form fields */
+}
+
+/* Styling for individual form controls */
+.form__controls {
+  margin-bottom: 15px; /* Adds space between input fields */
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Ensures that input takes full width of container */
+}
+
+.form__controls > label {
+  margin-bottom: 5px; /* Adds space between label and input */
+  font-weight: bold;
+}
+
+.form__controls > input {
+  padding: 10px;
+  width: 100%; /* Make inputs take full width of parent */
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  box-sizing: border-box; /* Ensures padding is considered within the input's width */
+  transition: 0.1s ease-in-out;
+}
+
+.message {
+  margin-top: 20px;  /* Adds space between the h1 and p elements */
+}
+
+.form__controls > input:focus {
+  outline: 2px solid #84c586;
+  outline-offset: 1px;
+  transform: scale(1.05);
+}
+
+/* Media query to handle responsiveness on smaller screens */
+@media only screen and (max-width: 480px) {
+  .form__container {
+    width: 290px; /* Adjust form width for smaller screens */
+  }
+  .form__controls > input {
+    width: 100%; /* Ensure inputs take full width on smaller screens */
+  }
+}
