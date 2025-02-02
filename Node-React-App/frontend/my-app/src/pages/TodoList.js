@@ -2,16 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import '../styles/TodoList.css'; 
 import UpdateTaskList from "../components/UpdateTaskList"; 
+import { addTaskToBackend } from "../services/todoService"
+import { fetchTaskInfo } from "../services/fetchTaskInfo"
 
 const TodoList = () => {
 
   const [newTaskText, setNewTaskText] = useState('');
   const [isValidTask, setIsValidTask] = useState(false);
-  const [tasks, setTasks] = useState([
-    "Buy groceries 🛒",
-    "Complete project report 📑",
-    "Schedule a meeting 📅",
-  ]); 
+  const [tasks, setTasks] = useState([]); 
 
 
   const handleInputChange = (e) => {
@@ -19,16 +17,33 @@ const TodoList = () => {
     const isValid = taskInfo.trim().length > 0;
     setIsValidTask(isValid);
     setNewTaskText(taskInfo);
-    console.log("Final the task info1", newTaskText);
   };
 
   useEffect(() => {
-    console.log("Final the task info", newTaskText);
+    //console.log("Final the task info", newTaskText);
   }, [newTaskText]);
 
-  const handleAddTask = () => {
+  useEffect(() => {
+    const getTasks = async () => {
+      const fetchedTasks = await fetchTaskInfo();
+      if (fetchedTasks) {
+        console.log("Fetched tasks from backend:", fetchedTasks);
+        setTasks(fetchedTasks);  // Update the state with the fetched tasks
+      }
+    };
+
+    getTasks();  // Call the function to fetch tasks
+  }, []);
+
+  const handleAddTask = async () => {
     console.log("Adding the task info", newTaskText);
     if (newTaskText.trim()){
+      const addedTask = await addTaskToBackend(newTaskText);
+     
+      if (addedTask) {
+        console.log("Current task is ", addedTask);
+        setTasks([...tasks, addedTask.taskname]);
+      }
       setNewTaskText('');
       setIsValidTask(false);
     }
@@ -37,7 +52,6 @@ const TodoList = () => {
   return (
     <div className="todo-container">
       <h2>To-do list</h2>
-          {/* Render task list */}
           <UpdateTaskList tasks={tasks} />
       <div className="add-task">
         <input 

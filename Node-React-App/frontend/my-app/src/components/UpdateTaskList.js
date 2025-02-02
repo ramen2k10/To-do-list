@@ -6,7 +6,7 @@ const UpdateTaskList = ({ tasks }) => {
   const handleCheckboxChange = (index) => {
     setCompletedTasks((prev) => ({
       ...prev,
-      [index]: !prev[index], // Toggle completion state
+      [index]: !prev[index],
     }));
   };
 
@@ -20,7 +20,7 @@ const UpdateTaskList = ({ tasks }) => {
             onChange={() => handleCheckboxChange(index)} 
           />
           <span style={{ textDecoration: completedTasks[index] ? "line-through" : "none" }}>
-            {task}
+            {task.taskname}
           </span>
         </div>
       ))}
