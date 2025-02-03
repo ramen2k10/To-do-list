@@ -1,0 +1,71 @@
+.task-list-container {
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task-text {
+    flex: 1;
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: #888;
+  }
+  
+  .edit-button, .save-button, .delete-button {
+    background: #95a8bd;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .edit-button:hover {
+    background: #3872af;
+  }
+  
+  .save-button {
+    background: #42664b;
+  }
+  
+  .save-button:hover {
+    background: #5d8a66;
+  }
+  
+  .delete-button {
+    background: #aab7dd;;
+  }
+  
+  .delete-button:hover {
+    background: #ff4d4d;
+  }
+  
+  .edit-input {
+    flex: 1;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  

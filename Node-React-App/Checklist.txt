@@ -1,0 +1,9 @@
+Pending Task:
+1. Once refresh the completed task is not showing properly
+2. Add the delete func
+3. add the edit task info func
+4. Add save func
+
+Completed:
+1. DB connection
+2. curd operation
