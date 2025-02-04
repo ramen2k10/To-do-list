@@ -62,7 +62,7 @@ app.post("/api/login", (req, res) => {
 });
 
 app.get("/api/fetchAllTask", (req, res) => {
-  const sql = "SELECT taskname FROM todo_list";
+  const sql = "SELECT * FROM todo_list";
   db.query(sql, (err, result) => {
       if (err) {
           console.error("Error retrieving task:", err);
@@ -76,12 +76,12 @@ app.get("/api/fetchAllTask", (req, res) => {
 
 app.put("/api/updateTask", (req, res) => {
   const { taskname, taskCompleted } = req.body;
-
+  
   if (!taskname) {
       console.error("Error: taskname is missing!");
       return res.status(400).json({ error: "Task name is required" });
   }
-
+  console.log("i'm here..")
   console.log("Received request for update task:", { taskname });
 
   const sql = "UPDATE todo_list SET status = ? WHERE taskname = ?";
@@ -94,6 +94,62 @@ app.put("/api/updateTask", (req, res) => {
 
       // Send only one response
       res.status(200).json({ message: "Task updated successfully!", taskname, taskCompleted });
+  });
+});
+
+app.put("/api/updateTaskByName", (req, res) => {
+  const { taskname, taskId } = req.body;
+  console.log("It reached here..")
+  if (!taskname) {
+      console.error("Error: taskname is missing!");
+      return res.status(400).json({ error: "Task name is required" });
+  }
+
+  console.log("Received request for update taskName:", { taskname, taskId });
+
+  const sql = "UPDATE todo_list SET taskname = ? WHERE id = ?";
+  db.query(sql, [taskname, taskId], (err, result) => {
+      if (err) {
+          console.error("Error inserting task:", err);
+          return res.status(500).json({ error: "Database error" });
+      }
+      console.log("Taskname updated successfully:", { taskname, taskId });
+
+      if (result.affectedRows > 0) {
+        console.log("Taskname updated successfully:", { taskname, taskId });
+        res.status(200).json({ message: "Task updated successfully!", taskname, taskId });
+      } else {
+        console.log("Task not found with id:", taskId);
+        res.status(404).json({ message: "Task not found" });
+      }
+  });
+});
+
+app.delete("/api/deleteTask", (req, res) => {
+  const { taskname, taskId } = req.body;
+  console.log("It reached here..")
+  if (!taskname) {
+      console.error("Error: taskname is missing!");
+      return res.status(400).json({ error: "Task name is required" });
+  }
+
+  console.log("Received request for deleting taskName:", { taskname, taskId });
+
+  const sql = "DELETE FROM todo_list WHERE taskname = ?";
+  db.query(sql, [taskname], (err, result) => {
+      if (err) {
+          console.error("Error inserting task:", err);
+          return res.status(500).json({ error: "Database error" });
+      }
+      console.log("Task deleted successfully:", { taskname, taskId });
+
+      if (result.affectedRows > 0) {
+        console.log("Task deleted successfully:", { taskname, taskId });
+        res.status(200).json({ message: "Task deleted successfully!", taskname, taskId });
+      } else {
+        console.log("Task not found with id:", taskId);
+        res.status(404).json({ message: "Task not found" });
+      }
   });
 });
 

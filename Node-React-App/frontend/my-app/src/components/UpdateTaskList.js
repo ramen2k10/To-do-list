@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import './updateList.css';
 
-import { updateTaskInfo } from "../services/updateTaskInfo"
+import { updateTaskInfo, updateTaskName } from "../services/updateTaskInfo"
+import { deleteTaskInfo } from "../services/deleteTask"
 
-const UpdateTaskList = ({ tasks }) => {
+const UpdateTaskList = ({ tasks, onEditTask, onDeleteTask  }) => {
   const [completedTasks, setCompletedTasks] = useState({});
   const [taskCompleted, setTaskCompleted] = useState({});
   const [editingIndex, setEditingIndex] = useState(null);
@@ -25,14 +26,42 @@ const UpdateTaskList = ({ tasks }) => {
     }
   };
 
+    const updateNameOfTask = async (taskId, taskToUpdate) => {
+      const updateTask =  await updateTaskName(taskId, taskToUpdate);
+      if (updateTask) {
+        console.log("Fetched tasks from backend:", updateTask);
+        //setTasks(updateTask);
+        //onEditTask(taskId, editedText);
+      }
+    };
+
+    const deleteTask = async (taskId, taskToDelete) => {
+      const deletedTask =  await deleteTaskInfo(taskId, taskToDelete);
+      if (deletedTask) {
+        console.log(" tasks deleted from backend:", deletedTask);
+        //setTasks(updateTask);
+        //onEditTask(taskId, editedText);
+      }
+    };  
+
   const handleEditClick = (index) => {
     setEditingIndex(index); // Set the index of the task being edited
     setEditedText(tasks[index].taskname); // Load existing task name into input field
+    console.log("Updated task name", tasks[index].taskname)
   };
 
   const handleSaveEdit = (index) => {
-    //onEditTask(index, editedText);
+    onEditTask(index, editedText);
     setEditingIndex(null); // Exit editing mode
+    console.log("Saved task name", editedText, index)
+    updateNameOfTask (index, editedText)
+  };
+
+  const handleDeleteClick = (index) => {
+    console.log("Delete task", tasks[index].taskname, index)
+    const taskToDelete =  tasks[index].taskname;
+    deleteTask(index, taskToDelete);
+    onDeleteTask(index);
   };
 
   return (
@@ -62,7 +91,7 @@ const UpdateTaskList = ({ tasks }) => {
           ) : (
             <button className="edit-button" onClick={() => handleEditClick(index)}>✏️</button>
           )}
-          <button className="delete-button">
+          <button className="delete-button" onClick={() => handleDeleteClick(index)}>
             ❌
           </button>
         </div>
