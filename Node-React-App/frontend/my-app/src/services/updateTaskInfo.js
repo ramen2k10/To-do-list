@@ -1,14 +1,14 @@
 const API_URL = "http://localhost:9001/api/updateTask"; // Replace with your actual API URL
 const API_URL_ = "http://localhost:9001/api/updateTaskByName"; 
 
-export const updateTaskInfo = async (task, status) => {
+export const updateTaskInfo = async (taskId, status) => {
   try {
     console.log("Send the post request to backend:");
-    const statusValue = status ? 1 : 0;
+    const statusValue = status ;
     const response = await fetch(API_URL, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskname: task,  taskCompleted: statusValue}),
+      body: JSON.stringify({ taskId: taskId,  status: statusValue}),
     });
 
     if (response.ok) {

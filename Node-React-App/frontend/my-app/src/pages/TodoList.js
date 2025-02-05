@@ -6,11 +6,11 @@ import { addTaskToBackend } from "../services/todoService"
 import { fetchTaskInfo } from "../services/fetchTaskInfo"
 
 const TodoList = () => {
-
+  console.log("TodoList is rendering...");
   const [newTaskText, setNewTaskText] = useState('');
   const [isValidTask, setIsValidTask] = useState(false);
   const [tasks, setTasks] = useState([]); 
-
+  console.log("setTasks in TodoList:", tasks);
 
   const handleInputChange = (e) => {
     const taskInfo = e.target.value;
@@ -18,6 +18,7 @@ const TodoList = () => {
     setIsValidTask(isValid);
     setNewTaskText(taskInfo);
   };
+
 
   useEffect(() => {
     //console.log("Final the task info", newTaskText);
@@ -42,7 +43,7 @@ const TodoList = () => {
     //   setTasks(fetchedTasks.taskname);
     // }
     if (fetchedTasks && fetchedTasks.tasks) {  // ✅ Ensure tasks exist
-      console.log("Fetched tasks from backend:", fetchedTasks.tasks);
+      console.log("Fetched tasks from backend:", fetchedTasks.tasks, fetchedTasks.tasks);
       setTasks(fetchedTasks.tasks);
     } else {
       console.error("Failed to fetch tasks or tasks are undefined.");
@@ -84,10 +85,11 @@ const TodoList = () => {
     setTasks(updatedTasks);
   };
 
+
   return (
     <div className="todo-container">
       <h2>To-do list</h2>
-          <UpdateTaskList tasks={tasks} onEditTask={handleEditTask} onDeleteTask={handleDeleteTask}/>
+          <UpdateTaskList tasks={tasks} setTasks={setTasks} onEditTask={handleEditTask} onDeleteTask={handleDeleteTask}/>
       <div className="add-task">
         <input 
           type="text" 

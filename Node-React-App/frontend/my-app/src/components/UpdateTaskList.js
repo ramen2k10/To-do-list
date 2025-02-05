@@ -5,22 +5,44 @@ import './updateList.css';
 import { updateTaskInfo, updateTaskName } from "../services/updateTaskInfo"
 import { deleteTaskInfo } from "../services/deleteTask"
 
-const UpdateTaskList = ({ tasks, onEditTask, onDeleteTask  }) => {
+const UpdateTaskList = ({ tasks, setTasks, onEditTask, onDeleteTask  }) => {
+  console.log("Props passed to UpdateTaskList:", { setTasks });
   const [completedTasks, setCompletedTasks] = useState({});
   const [taskCompleted, setTaskCompleted] = useState({});
   const [editingIndex, setEditingIndex] = useState(null);
   const [editedText, setEditedText] = useState("");
 
-  const handleCheckboxChange = async (index) => {
-    console.log("Task to update here...", index)
-    const taskToUpdate = tasks[index].taskname;
-    const newStatus = !completedTasks[index];
-    const response = await updateTaskInfo(taskToUpdate, newStatus);
+  // const handleCheckboxChange = async (index) => {
+  //   console.log("Task to update here...", index)
+  //   const taskToUpdate = tasks[index].taskname;
+  //   const newStatus = !completedTasks[index];
+  //   const response = await updateTaskInfo(taskToUpdate, newStatus);
+  //   if (response){
+  //     setCompletedTasks((prev) => ({
+  //       ...prev,
+  //       [index]: !prev[index],
+  //     }));
+  //   } else {
+  //     console.error("Failed to update task in the database.");
+  //   }
+  // };
+
+  const handleCheckboxChange = async (taskId, status) => {
+    console.log("Inputs of checkbox change...", taskId, status)
+    // const taskToUpdate = tasks[index].taskname;
+     const newStatus = status === 1? 0:1;
+     const response = await updateTaskInfo(taskId, newStatus);
     if (response){
-      setCompletedTasks((prev) => ({
-        ...prev,
-        [index]: !prev[index],
-      }));
+      // setCompletedTasks((prev) => ({
+      //   ...prev,
+      //   [index]: !prev[index],
+      // }));
+      console.log("Props passed to UpdateTaskList:", { setTasks });
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === taskId ? { ...task, status: newStatus } : task
+        )
+      );
     } else {
       console.error("Failed to update task in the database.");
     }
@@ -50,11 +72,11 @@ const UpdateTaskList = ({ tasks, onEditTask, onDeleteTask  }) => {
     console.log("Updated task name", tasks[index].taskname)
   };
 
-  const handleSaveEdit = (index) => {
+  const handleSaveEdit = (index, taskId) => {
     onEditTask(index, editedText);
     setEditingIndex(null); // Exit editing mode
-    console.log("Saved task name", editedText, index)
-    updateNameOfTask (index, editedText)
+    console.log("Saved task name", editedText, index, taskId)
+    updateNameOfTask (taskId, editedText)
   };
 
   const handleDeleteClick = (index) => {
@@ -70,10 +92,11 @@ const UpdateTaskList = ({ tasks, onEditTask, onDeleteTask  }) => {
         <div key={index} className="task-item">
           <input 
             type="checkbox" 
-            checked={completedTasks[index] || false} 
-            onChange={() => handleCheckboxChange(index)} 
+            //checked={completedTasks[index] || false} 
+            checked={task.status === 1}
+            //onChange={() => handleCheckboxChange(index)} 
+            onChange={() => handleCheckboxChange(task.id, task.status )}  
           />
-
           {editingIndex === index ? (
             <input
               type="text"
@@ -82,12 +105,12 @@ const UpdateTaskList = ({ tasks, onEditTask, onDeleteTask  }) => {
               className="edit-input"
             />
           ) : (
-            <span className={`task-text ${completedTasks[index] ? "completed" : ""}`}>
+            <span className={`task-text ${task.status === 1 ? "completed" : ""}`}>
               {task.taskname}
             </span>
           )}
           {editingIndex === index ? (
-            <button className="save-button" onClick={() => handleSaveEdit(index)}>💾</button>
+            <button className="save-button" onClick={() => handleSaveEdit(index, task.id)}>💾</button>
           ) : (
             <button className="edit-button" onClick={() => handleEditClick(index)}>✏️</button>
           )}

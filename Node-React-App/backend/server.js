@@ -75,25 +75,25 @@ app.get("/api/fetchAllTask", (req, res) => {
 });
 
 app.put("/api/updateTask", (req, res) => {
-  const { taskname, taskCompleted } = req.body;
+  const { taskId, status } = req.body;
   
-  if (!taskname) {
+  if (!taskId) {
       console.error("Error: taskname is missing!");
       return res.status(400).json({ error: "Task name is required" });
   }
   console.log("i'm here..")
-  console.log("Received request for update task:", { taskname });
+  console.log("Received request for update status:", { status });
 
-  const sql = "UPDATE todo_list SET status = ? WHERE taskname = ?";
-  db.query(sql, [taskCompleted, taskname], (err, result) => {
+  const sql = "UPDATE todo_list SET status = ? WHERE id = ?";
+  db.query(sql, [status, taskId], (err, result) => {
       if (err) {
           console.error("Error inserting task:", err);
           return res.status(500).json({ error: "Database error" });
       }
-      console.log("Task updated successfully:", { taskname, taskCompleted });
+      console.log("Task updated successfully:", { taskId, status });
 
       // Send only one response
-      res.status(200).json({ message: "Task updated successfully!", taskname, taskCompleted });
+      res.status(200).json({ message: "Task updated successfully!", taskId, status });
   });
 });
 
