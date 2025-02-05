@@ -12,7 +12,7 @@ export const fetchTaskInfo = async () => {
         const responseData = await response.json();
         console.log("Response from backend server:", responseData);
   
-        return responseData.tasks; 
+        return responseData; 
       } else {
         throw new Error("Failed to fetch tasks");
       }
