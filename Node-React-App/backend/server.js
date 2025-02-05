@@ -39,17 +39,17 @@ app.post("/api/login", (req, res) => {
   });
 
   app.post("/api/add-task", (req, res) => {
-    const { taskname } = req.body;
+    const { taskname, status } = req.body;
 
     if (!taskname) {
         console.error("Error: taskname is missing!");
         return res.status(400).json({ error: "Task name is required" });
     }
 
-    console.log("Received task:", { taskname });
+    console.log("Received task:", { taskname , status});
 
-    const sql = "INSERT INTO todo_list (taskname) VALUES (?)";
-    db.query(sql, [taskname], (err, result) => {
+    const sql = "INSERT INTO todo_list (taskname, status) VALUES (?, ?)";
+    db.query(sql, [taskname, status], (err, result) => {
         if (err) {
             console.error("Error inserting task:", err);
             return res.status(500).json({ error: "Database error" });

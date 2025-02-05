@@ -2,11 +2,12 @@ const API_URL = "http://localhost:9001/api/add-task"; // Replace with your actua
 
 export const addTaskToBackend = async (task) => {
   try {
-    console.log("Send the post request to backend:");
+    const status = 0;
+    console.log("Send the post request to backend:", status);
     const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskname: task }),
+      body: JSON.stringify({ taskname: task , status: status}),
     });
 
     if (response.ok){
